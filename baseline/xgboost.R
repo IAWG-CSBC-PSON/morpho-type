@@ -16,9 +16,6 @@ fnTrain <- setdiff(cmd, fnTest)
 cat("Training on", str_flatten(fnTrain, ", "), "\n")
 cat("Making predictions on", fnTest, "\n")
 
-fnTest <- "../data/Lung3.csv.gz"
-fnTrain <- c("../data/Lung1.csv.gz", "../data/Lung2.csv.gz")
-
 ## Load all input files
 Tr <- map(fnTrain, read_csv, col_types=cols()) %>% bind_rows
 Te <- read_csv(fnTest, col_types=cols())
@@ -44,7 +41,8 @@ ypred <- mli[ match(predict(mdl, Xte), mli) ] %>% names
 ## Combine with CellIDs and write out to file
 Pred <- select(Te, CellID) %>% mutate(Pred = ypred)
 fnOut <- basename(fnTest) %>% str_split(".csv") %>%
-    pluck(1,1) %>% str_c( "-pred.csv.gz" )
+    pluck(1,1) %>% str_c( "-xgboost.csv.gz" )
+cat("Saving predictions to", fnOut, "\n")
 write_csv( Pred, fnOut )
 
 ## caret::confusionMatrix( factor(ypred, names(mli)),
