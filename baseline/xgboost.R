@@ -45,10 +45,6 @@ fnOut <- basename(fnTest) %>% str_split(".csv") %>%
 cat("Saving predictions to", fnOut, "\n")
 write_csv( Pred, fnOut )
 
-## caret::confusionMatrix( factor(ypred, names(mli)),
-##                        factor(Te$Label, names(mli)),
-##                        mode="everything" )
-
 ## gbm alternative
 ## Xy <- select( Xraw, Label, one_of(fInput) )
 ## mdl2 <- gbm( Label ~ ., data=Xy, distribution="multinomial", verbose=TRUE )
