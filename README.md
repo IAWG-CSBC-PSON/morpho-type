@@ -77,6 +77,6 @@ Prediction Immune Stroma Tumor
 ...
 ```
 
-Recall that true labels are assigned based on posterior probability of marker expression. We can use these probabilities to assign importance to individual predictions. Intuitively, we are better positioned to evaluate a predictor on labels in which we have higher confidence. If we are uncertain that a given cell is Tumor based on its marker expression, it would be unfair to penalize a morphology-based predictor that misclassifies this cell as Stroma or Immune. This is the intuition behind probability-based AUC metrics, which rank all cells according to the correpsonding posterior probability values and compute area under the ROC curve based on matching predictions.
+Recall that true labels are assigned based on posterior probability of marker expression. We can also interpret these probabilities as the level of importance for individual predictions. Intuitively, we would like a predictor to be more accurate on cells where we are more confident in our ground truth. Conversely, if we are uncertain that a given cell is Tumor (based on marker expression), it would be unfair to penalize a morphology-based predictor that misclassifies this cell as Stroma or Immune. This is the intuition behind probability-based AUC metrics, which rank all cells according to the correpsonding posterior probability values and compute area under the ROC curve from the matching predictions.
 
 The remaining metrics are more standard and treat predictions and true labels as discrete class calls.
