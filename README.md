@@ -24,11 +24,19 @@ Morphological features, neighborhood information and class labels for three lung
 The files were wrangled based on data published in [Rashid, et al. (2019)](https://www.nature.com/articles/s41597-019-0332-y) and can be regenerated using `Rscript wrangle.R`.
 
 ### Raw images
-Raw images from which all features were derived can be downloaded from Synapse in .ome.tif format:
+Raw images from which all features were derived can be downloaded from Synapse together with their segmentation masks:
 
-  * Lung1 -> [syn17774887](https://www.synapse.org/#!Synapse:syn17774887)
-  * Lung2 -> [syn17776482](https://www.synapse.org/#!Synapse:syn17776482)
-  * Lung3 -> [syn17778717](https://www.synapse.org/#!Synapse:syn17778717)
+  * Lung1 -> [Image](https://www.synapse.org/#!Synapse:syn17774887), [Segmentation Mask](https://www.synapse.org/#!Synapse:syn21636326)
+  * Lung2 -> [Image](https://www.synapse.org/#!Synapse:syn17776482), [Segmentation Mask](https://www.synapse.org/#!Synapse:syn21636350)
+  * Lung3 -> [Image](https://www.synapse.org/#!Synapse:syn17778717), [Segmentation Mask](https://www.synapse.org/#!Synapse:syn21636364)
+
+R code to download all of these at once is as follows:
+
+``` R
+synapser::synLogin()
+syn <- synExtra::synDownloader("/path/to/data/folder/")
+syn("syn17774887", "syn17776482", "syn17778717", "syn21636326", "syn21636350", "syn21636364")
+```
 
 ## Running the baseline method
 
