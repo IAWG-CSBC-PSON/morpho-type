@@ -1,8 +1,8 @@
 Probability-based AUC values
 
-Probability-based AUC for Immune : 0.6404325 
-Probability-based AUC for Stroma : 0.6645558 
-Probability-based AUC for  Tumor : 0.8418661 
+Probability-based AUC for Immune : 0.606027 
+Probability-based AUC for Stroma : 0.6635806 
+Probability-based AUC for  Tumor : 0.8022457 
 
 Confusion Matrix and Statistics
 
