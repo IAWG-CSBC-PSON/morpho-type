@@ -1,0 +1,39 @@
+Probability-based AUC values
+
+Probability-based AUC for Immune : 0.6697828 
+Probability-based AUC for Stroma : 0.6415585 
+Probability-based AUC for  Tumor : 0.7093955 
+
+Confusion Matrix and Statistics
+
+          Reference
+Prediction Immune Stroma Tumor
+    Immune  34532   9763  5651
+    Stroma  16137  14214  4918
+    Tumor    7010   2649  9695
+
+Overall Statistics
+                                          
+               Accuracy : 0.5589          
+                 95% CI : (0.5559, 0.5619)
+    No Information Rate : 0.5516          
+    P-Value [Acc > NIR] : 1.082e-06       
+                                          
+                  Kappa : 0.2825          
+                                          
+ Mcnemar's Test P-Value : < 2.2e-16       
+
+Statistics by Class:
+
+                     Class: Immune Class: Stroma Class: Tumor
+Sensitivity                 0.5987        0.5338      0.47843
+Specificity                 0.6713        0.7299      0.88543
+Pos Pred Value              0.6914        0.4030      0.50093
+Neg Pred Value              0.5762        0.8209      0.87597
+Precision                   0.6914        0.4030      0.50093
+Recall                      0.5987        0.5338      0.47843
+F1                          0.6417        0.4593      0.48942
+Prevalence                  0.5516        0.2546      0.19379
+Detection Rate              0.3302        0.1359      0.09271
+Detection Prevalence        0.4776        0.3373      0.18508
+Balanced Accuracy           0.6350        0.6319      0.68193
