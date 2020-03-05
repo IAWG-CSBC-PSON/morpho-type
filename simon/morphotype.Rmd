@@ -1,0 +1,34 @@
+---
+title: "Morphotype"
+author: "Simon Vandekar"
+date: "3/5/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Download images from synapse
+
+```{r, eval=FALSE}
+install.packages("synapser", repos=c("http://ran.synapse.org", "http://cran.fhcrc.org"))
+synapser::synLogin()
+syn <- synExtra::synDownloader("/path/to/data/folder/")
+syn("syn17774887", "syn17776482", "syn17778717", "syn21636326", "syn21636350", "syn21636364")
+
+```
+
+
+## Load in csv data
+
+
+
+```{r}
+
+l1 = read.csv('data/Lung1.csv.gz')
+trash = lapply(l1[,6:9], hist)
+
+
+```
+
