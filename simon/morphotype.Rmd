@@ -29,6 +29,18 @@ syn("syn17774887", "syn17776482", "syn17778717", "syn21636326", "syn21636350", "
 l1 = read.csv('data/Lung1.csv.gz')
 trash = lapply(l1[,6:9], hist)
 
+l2 = read.csv('../data/Lung2.csv')
+predl2 = read.csv('Lung2-xgboost.csv.gz')
+l2 = merge(l2, predl2)
+l2$maxprob = as.numeric(apply(l2[,c('Immune', 'Stroma', 'Tumor', 'Label')], 1, function(x) x[as.character(x['Label'])]))
+wrong = l2[l2$Pred != l2$Label,]
+boxplot(maxprob ~ Pred, data=wrong)
+
+quantile(wrong$maxprob, probs = c(0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99))
+certainwrong = wrong[ wrong$maxprob>0.95,]
+write.csv(certainwrong, file = 'Lung2_certain_but_wrong.csv', quote=FALSE, row.names = FALSE)
+
+
 
 ```
 
