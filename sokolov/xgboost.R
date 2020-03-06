@@ -30,18 +30,24 @@ mli <- c( Stroma = 0L, Immune = 1L, Tumor = 2L )
 ## Train a model
 X <- select(Tr, one_of(fInput)) %>% as.matrix
 y <- mli[Tr$Label]
-xgbp <- list( objective="multi:softmax", num_class=3 )
+##xgbp <- list( objective="multi:softmax", num_class=3 )
+xgbp <- list( objective="multi:softprob", num_class=3 )
 mdl <- xgboost::xgboost( X, y, nrounds=100, params=xgbp, print_every_n=10 )
 
 ## Apply the model to score test data
 Xte <- select(Te, one_of(fInput)) %>% as.matrix
 stopifnot( identical(colnames(X), colnames(Xte)) )
-ypred <- mli[ match(predict(mdl, Xte), mli) ] %>% names
+##ypred <- mli[ match(predict(mdl, Xte), mli) ] %>% names
+Pred <- predict(mdl, Xte, reshape=TRUE) %>%
+    magrittr::set_colnames(names(mli) ) %>%
+    as_tibble() %>%
+    mutate(CellID = Te$CellID) %>%
+    select(CellID, everything())
 
 ## Combine with CellIDs and write out to file
-Pred <- select(Te, CellID) %>% mutate(Pred = ypred)
+#Pred <- select(Te, CellID) %>% mutate(Pred = ypred)
 fnOut <- basename(fnTest) %>% str_split(".csv") %>%
-    pluck(1,1) %>% str_c( "-xgboost.csv.gz" )
+    pluck(1,1) %>% str_c( "-predprob.csv.gz" )
 cat("Saving predictions to", fnOut, "\n")
 write_csv( Pred, fnOut )
 
