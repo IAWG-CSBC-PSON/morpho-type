@@ -24,7 +24,7 @@ syn("syn17774887", "syn17776482", "syn17778717", "syn21636326", "syn21636350", "
 
 
 
-```{r}
+```{r, eval=FALSE}
 
 l1 = read.csv('data/Lung1.csv.gz')
 trash = lapply(l1[,6:9], hist)
@@ -40,7 +40,47 @@ quantile(wrong$maxprob, probs = c(0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0
 certainwrong = wrong[ wrong$maxprob>0.95,]
 write.csv(certainwrong, file = 'Lung2_certain_but_wrong.csv', quote=FALSE, row.names = FALSE)
 
+sum(c(0.6, 3.0, 1.2, 0.6, 0.6, 1.2, 0.6))
+
+out = data.frame(Significance=c(3,2,3), Investigators=c(2,4,1), Innovation=c(2,2,3), Approach=c(3,2,3), Environment=c(2,1,1) )
+```
 
 
+```{r}
+
+suppressMessages(library(tidyverse))
+lfiles = paste0('../data/Lung', 1:3, '-rawprob.csv')
+#lfiles = paste0('../data/Lung', 1:3, '.csv')
+plfiles = paste0('../predictions/baseline/Lung', 1:3, '-predprob.csv')
+l = do.call(rbind, lapply(lfiles, function(x) {out = read.csv(x); out$file=x;out} ))
+pl = do.call(rbind, lapply(1:length(plfiles), function(xind) {out = read.csv(plfiles[xind]); out$file=lfiles[xind];out} ))
+names(pl)[2:4] = c('pred_Stroma', 'pred_Immune', 'pred_Tumor')
+m = merge(l, pl)
+
+library(scales)
+# immune cells
+#trash = by(m, m$file, function(x) plot(x$Immune, x$pred_Immune) )
+cex=1.5
+par(mfrow=c(1,3), mgp=c(1.7,.7,0), lwd=1.5, lend=2, cex.lab=0.8*cex, cex.axis=0.8*cex, cex.main=1*cex, mfrow=c(1,1), mar=c(2.8,2.8,1.8,.2))
+
+#trash= by(m, m$file, function(x){ plot(x$Immune, x$pred_Immune, main='Immune cells', xlab='Expression-based probability', ylab='Morphology-based probability', col=alpha('black', 0.1), pch=16); lines(lowess(x$Immune, x$pred_Immune), col='blue')} )
+
+plot(m$Immune, m$pred_Immune, main='Immune cells', xlab='Expression-based probability', ylab='Morphology-based probability', col=alpha('black', 0.01), pch=16); lines(lowess(m$Immune, m$pred_Immune), col='blue')
+
+#trash= by(m, m$file, function(x){ plot(x$Stroma, x$pred_Stroma, main='Stroma cells', xlab='Expression-based probability', ylab='Morphology-based probability', col=alpha('black', 0.1), pch=16); lines(lowess(x$Stroma, x$pred_Stroma), col='blue')} )
+plot(m$Stroma, m$pred_Stroma, main='Stroma cells', xlab='Expression-based probability', ylab='Morphology-based probability', col=alpha('black', 0.01), pch=16); lines(lowess(m$Stroma, m$pred_Stroma), col='blue')
+
+#trash= by(m, m$file, function(x) plot(lowess(x$Stroma, x$pred_Stroma), main='Stroma cells', xlab='Expression-based probability', ylab='Morphology-based probability', type='l') )
+
+plot(m$Tumor, m$pred_Tumor, main='Tumor cells', xlab='Expression-based probability', ylab='Morphology-based probability', col=alpha('black', 0.01), pch=16); lines(lowess(m$Tumor, m$pred_Tumor), col='blue')
+
+#
+```
+
+
+```{r}
+
+r = m [ grepl('Lung2', m$file) & m$Tumor<0.1 & m$pred_Tumor>0.95, ]
+write.csv(r, file='bad_express_good_morph_pred.csv', row.names=FALSE, quote=FALSE)
 ```
 
